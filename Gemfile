@@ -5,3 +5,7 @@ gem 'rake'
 gem 'twitter'
 gem 'mechanize'
 gem 'dotenv'
+
+group :development do
+  gem 'rubocop'
+end
