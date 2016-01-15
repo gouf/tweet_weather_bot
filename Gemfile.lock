@@ -68,6 +68,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.1)
     webrobots (0.1.2)
+    yard (0.8.7.6)
 
 PLATFORMS
   ruby
@@ -78,6 +79,7 @@ DEPENDENCIES
   rake
   rubocop
   twitter
+  yard
 
 BUNDLED WITH
    1.11.2

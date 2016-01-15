@@ -11,3 +11,7 @@ gem 'dotenv'
 group :development do
   gem 'rubocop'
 end
+
+group :doc do
+  gem 'yard'
+end
