@@ -1,3 +1,4 @@
+# Refinements String class
 module StringToJST
   refine String do
     def parse_in_jst
@@ -14,17 +15,21 @@ module StringToJST
 end
 
 module MyMechanize
+  # Fetch weather information from Yahoo!
   class Weather
     using StringToJST
 
+    # @return [String]
     attr_reader :area
 
+    # List of available area
     AREA_URL = {
       東京: 'http://weather.yahoo.co.jp/weather/jp/13/4410.html',
       横浜: 'http://weather.yahoo.co.jp/weather/jp/14/4610.html',
       那覇: 'http://weather.yahoo.co.jp/weather/jp/47/9110.html'
     }.freeze
 
+    # Find weather information by XPath
     XPATHS = {
       today_weather:       '(//p[@class="pict"]/text())[1]',
       highest_temperature: '(//li[@class="high"]/em/text())[1]',
@@ -33,6 +38,7 @@ module MyMechanize
       updated_at:          '(//p[@class="yjSt yjw_note_h2"]/text())[1]'
     }.freeze
 
+    # Format XPath data
     FORMATTER = {
       today_weather:       proc { |x| x.to_s },
       updated_at:          proc { |x| x.to_s.parse_in_jst },
@@ -41,6 +47,9 @@ module MyMechanize
       wash:                proc { |x| x.to_s }
     }.freeze
 
+    # Fetch weather information by specified area
+    # @param area [String]
+    # @return [String]
     def initialize(area)
       fail_if_key_not_found(area.to_sym)
 
@@ -48,6 +57,8 @@ module MyMechanize
       @area = area
     end
 
+    # Returns fetched weather information
+    # @return [Hash]
     def weather
       hash = {}
       hash[:area] = @area.capitalize.to_s
@@ -61,6 +72,8 @@ module MyMechanize
       hash
     end
 
+    # Refetch weather information
+    # @return [Hash]
     def update
       @mechanize.get(AREA_URL[@area])
       weather
