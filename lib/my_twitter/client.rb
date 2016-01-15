@@ -2,7 +2,11 @@ require 'twitter'
 require 'dotenv'
 
 module MyTwitterClient
+  # Tweet some text to own account
   class Client
+    # it needs some environment vatiable for tweet
+    # @return Twitter::REST::Client
+    # @see https://github.com/sferik/twitter/blob/master/examples%2FConfiguration.md
     def initialize
       Dotenv.load # effects only development environment
       @client = Twitter::REST::Client.new(
@@ -13,6 +17,7 @@ module MyTwitterClient
       )
     end
 
+    # @param tweet_text [String] tweet text
     def tweet(tweet_text)
       @client.update(tweet_text)
     rescue Twitter::Error::TooManyRequests => error
