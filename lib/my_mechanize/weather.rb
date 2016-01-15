@@ -1,0 +1,84 @@
+module StringToJST
+  refine String do
+    def parse_in_jst
+      regex = /(\d+)/
+      match_pattern = scan(regex).to_a
+
+      # In this case, string has always not pass value of seconds
+      year, month, day, hour, min, sec = [match_pattern, '00'].flatten.map { |x| x.rjust(2, '0') }
+
+      # DateTime.rfc3339('2001-02-03T04:05:06+07:00')
+      DateTime.rfc3339("#{year}-#{month}-#{day}T#{hour}:#{min}:#{sec}+09:00")
+    end
+  end
+end
+
+module MyMechanize
+  class Weather
+    using StringToJST
+
+    attr_reader :area
+
+    AREA_URL = {
+      東京: 'http://weather.yahoo.co.jp/weather/jp/13/4410.html',
+      横浜: 'http://weather.yahoo.co.jp/weather/jp/14/4610.html',
+      那覇: 'http://weather.yahoo.co.jp/weather/jp/47/9110.html'
+    }.freeze
+
+    XPATHS = {
+      today_weather:       '(//p[@class="pict"]/text())[1]',
+      highest_temperature: '(//li[@class="high"]/em/text())[1]',
+      lowest_temperature:  '(//li[@class="low"]/em/text())[1]',
+      wash:                '//div[@class="expExpo"]/dl/dd[1]/text()',
+      updated_at:          '(//p[@class="yjSt yjw_note_h2"]/text())[1]'
+    }.freeze
+
+    FORMATTER = {
+      today_weather:       proc { |x| x.to_s },
+      updated_at:          proc { |x| x.to_s.parse_in_jst },
+      highest_temperature: proc { |x| x.to_s },
+      lowest_temperature:  proc { |x| x.to_s },
+      wash:                proc { |x| x.to_s }
+    }.freeze
+
+    def initialize(area)
+      fail_if_key_not_found(area.to_sym)
+
+      @mechanize = MyMechanize::Client.new(AREA_URL[area.downcase.to_sym])
+      @area = area
+    end
+
+    def weather
+      hash = {}
+      hash[:area] = @area.capitalize.to_s
+
+      XPATHS.keys.each do |key|
+        xpath = XPATHS[key]
+        value = FORMATTER[key].call(@mechanize.page.xpath(xpath))
+        hash[key] = value
+      end
+
+      hash
+    end
+
+    def update
+      @mechanize.get(AREA_URL[@area])
+      weather
+    end
+
+    private
+
+    def fail_if_key_not_found(area)
+      unless AREA_URL.key?(area)
+        puts "Error! Area Key Has Not Found: #{area.capitalize}"
+        puts 'Available area:'
+
+        AREA_URL.keys.each do |key|
+          puts "  * #{key.capitalize}"
+        end
+
+        fail 'Area Key Has Not Found'
+      end
+    end
+  end
+end
