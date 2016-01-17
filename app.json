@@ -1,0 +1,29 @@
+{
+  "name": "tweet weather bot",
+  "description": "tweet weather infromation to your account",
+  "keywords": [
+    "small"
+  ],
+  "repository": "https://github.com/gouf/tweet_weather_bot",
+  "success_url": "/",
+  "env": {
+    "WEATHER_AREA": {
+      "description": "Report where to weather information"
+    },
+    "TWITTER_CONSUMER_KEY": {
+      "description": "Twitter app consumer key"
+    },
+    "TWITTER_CONSUMER_SECRET": {
+      "description": "Twitter app consumer secret"
+    },
+    "TWITTER_ACCESS_TOKEN": {
+      "description": "Twitter app accsess token"
+    },
+    "TWITTER_ACCESS_TOKEN_SECRET": {
+      "description": "Twitter app accsess token secret"
+    }
+  },
+  "addons": [
+    "scheduler"
+  ]
+}
