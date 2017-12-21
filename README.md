@@ -1,4 +1,5 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Code Climate](https://codeclimate.com/github/gouf/tweet_weather_bot/badges/gpa.svg)](https://codeclimate.com/github/gouf/tweet_weather_bot)
 
 # About
 
