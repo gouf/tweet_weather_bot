@@ -10,6 +10,7 @@ gem 'dotenv'
 
 group :development do
   gem 'rubocop'
+  gem 'pry'
 end
 
 group :doc do
