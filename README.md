@@ -6,7 +6,7 @@ Tweet weather information, scraped from Yahoo! 天気
 
 # Ruby version
 
-= 2.2.3
+~> 2.4.0
 
 # Setup
 
