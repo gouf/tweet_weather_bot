@@ -91,6 +91,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv
   mechanize
+  pry
   rake
   rubocop
   twitter
