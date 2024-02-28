@@ -93,7 +93,7 @@ GEM
     unicode-display_width (1.6.1)
     webrick (1.7.0)
     webrobots (0.1.2)
-    yard (0.9.24)
+    yard (0.9.35)
 
 PLATFORMS
   ruby
